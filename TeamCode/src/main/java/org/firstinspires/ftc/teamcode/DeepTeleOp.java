@@ -8,12 +8,10 @@ import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 @TeleOp(name = "TeleOp", group = "LucasNeilDeepBot")
 public class DeepTeleOp extends LinearOpMode {
 
-    DriveSubsystem drive;
+    private DriveSubsystem drive = new DriveSubsystem(hardwareMap, telemetry);
 
     @Override
     public void runOpMode() throws InterruptedException {
-
-        drive = new DriveSubsystem(hardwareMap, telemetry);
 
         telemetry.addLine("Ready");
 
