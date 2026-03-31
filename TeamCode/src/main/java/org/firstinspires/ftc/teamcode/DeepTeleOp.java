@@ -1,17 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
 @TeleOp(name = "TeleOp", group = "LucasNeilDeepBot")
+@Disabled
 public class DeepTeleOp extends LinearOpMode {
-
-    private DriveSubsystem drive = new DriveSubsystem(hardwareMap, telemetry);
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        DriveSubsystem drive = new DriveSubsystem(hardwareMap, telemetry);
 
         telemetry.addLine("Ready");
 
@@ -30,11 +32,11 @@ public class DeepTeleOp extends LinearOpMode {
 
             if (gamepad1.dpadUpWasPressed()) {
                 drive.Forward(2,1);
-            } else if (gamepad1.dpadDownWasPressed()) {
+            }else if (gamepad1.dpadDownWasPressed()) {
                 drive.Backward(2,1);
-            } else if (gamepad1.dpadRightWasPressed()) {
+            }else if (gamepad1.dpadRightWasPressed()) {
                 drive.Right(2,1);
-            } else if (gamepad1.dpadLeftWasPressed()) {
+            }else if (gamepad1.dpadLeftWasPressed()) {
                 drive.Left(2,1);
             }
 

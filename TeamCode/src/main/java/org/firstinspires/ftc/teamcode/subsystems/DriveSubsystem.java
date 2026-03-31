@@ -17,7 +17,7 @@ public class DriveSubsystem {
     public DcMotor frontRightMotor;
     public DcMotor backRightMotor;
     public IMU imu;
-    public ElapsedTime time = new ElapsedTime();
+    ElapsedTime time = new ElapsedTime();
     Telemetry tele;
     Constants constants;
     public DriveSubsystem(HardwareMap hardwareMap, Telemetry telemetry){
@@ -83,60 +83,60 @@ public class DriveSubsystem {
     public void Forward(long duration, double power){
         time.reset();
         while (time.seconds() <= duration) {
-            this.frontLeftMotor.setPower(power);
-            this.backLeftMotor.setPower(power);
-            this.frontRightMotor.setPower(power);
-            this.backRightMotor.setPower(power);
+            frontLeftMotor.setPower(power);
+            backLeftMotor.setPower(power);
+            frontRightMotor.setPower(power);
+            backRightMotor.setPower(power);
         } if (time.seconds() > duration){
-            this.frontLeftMotor.setPower(0);
-            this.backLeftMotor.setPower(0);
-            this.frontRightMotor.setPower(0);
-            this.backRightMotor.setPower(0);
+            frontLeftMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backRightMotor.setPower(0);
         }
     }
 
     public void Backward(long duration, double power){
         time.reset();
         while (time.seconds() <= duration) {
-            this.frontLeftMotor.setPower(-power);
-            this.backLeftMotor.setPower(-power);
-            this.frontRightMotor.setPower(-power);
-            this.backRightMotor.setPower(-power);
+            frontLeftMotor.setPower(-power);
+            backLeftMotor.setPower(-power);
+            frontRightMotor.setPower(-power);
+            backRightMotor.setPower(-power);
         } if (time.seconds() > duration){
-            this.frontLeftMotor.setPower(0);
-            this.backLeftMotor.setPower(0);
-            this.frontRightMotor.setPower(0);
-            this.backRightMotor.setPower(0);
+            frontLeftMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backRightMotor.setPower(0);
         }
     }
 
     public void Right(long duration, double power){
         time.reset();
         while (time.seconds() <= duration) {
-            this.frontLeftMotor.setPower(power);
-            this.backLeftMotor.setPower(-power);
-            this.frontRightMotor.setPower(-power);
-            this.backRightMotor.setPower(power);
+            frontLeftMotor.setPower(-power);
+            backLeftMotor.setPower(power);
+            frontRightMotor.setPower(power);
+            backRightMotor.setPower(-power);
         } if (time.seconds() > duration){
-            this.frontLeftMotor.setPower(0);
-            this.backLeftMotor.setPower(0);
-            this.frontRightMotor.setPower(0);
-            this.backRightMotor.setPower(0);
+            frontLeftMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backRightMotor.setPower(0);
         }
     }
 
     public void Left(long duration, double power){
         time.reset();
         while (time.seconds() <= duration) {
-            this.frontLeftMotor.setPower(-power);
-            this.backLeftMotor.setPower(power);
-            this.frontRightMotor.setPower(power);
-            this.backRightMotor.setPower(-power);
+            frontLeftMotor.setPower(power);
+            backLeftMotor.setPower(-power);
+            frontRightMotor.setPower(-power);
+            backRightMotor.setPower(power);
         } if (time.seconds() > duration){
-            this.frontLeftMotor.setPower(0);
-            this.backLeftMotor.setPower(0);
-            this.frontRightMotor.setPower(0);
-            this.backRightMotor.setPower(0);
+            frontLeftMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backRightMotor.setPower(0);
         }
     }
 }
