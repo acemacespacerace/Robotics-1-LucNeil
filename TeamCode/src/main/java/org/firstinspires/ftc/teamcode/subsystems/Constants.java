@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 public class Constants {
     public final double speedMultiplier = 1;
-    public final double submerseAng = 200; // TODO: change
-    public final double basketAng = 200; // TODO: change
-    public final double specimenAng = 200; // TODO: change
-    public final double submerseExt = 200; // TODO: change
-    public final double basketExt = 200; // TODO: change
-    public final double specimenExit = 200; // TODO: change
-    public final double tuckedExt = 0;
+    public final double kP = 0.01;
+    public final int submerseAng = 200; // TODO: change
+    public final int basketAng = 200; // TODO: change
+    public final int specimenAng = 200; // TODO: change
+    public final int submerseExt = 200; // TODO: change
+    public final int basketExt = 200; // TODO: change
+    public final int specimenExt = 200; // TODO: change
+    public final int tuckedExt = 0;
 }

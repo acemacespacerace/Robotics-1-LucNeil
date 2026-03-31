@@ -12,13 +12,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 public class DriveSubsystem {
     //    These lines are used to declare our motors & imu
-    public DcMotor frontLeftMotor;
-    public DcMotor backLeftMotor;
-    public DcMotor frontRightMotor;
-    public DcMotor backRightMotor;
-    public IMU imu;
-    ElapsedTime time = new ElapsedTime();
-    Telemetry tele;
+    public final DcMotor frontLeftMotor;
+    public final DcMotor backLeftMotor;
+    public final DcMotor frontRightMotor;
+    public final DcMotor backRightMotor;
+    public final IMU imu;
+    final ElapsedTime time = new ElapsedTime();
+    final Telemetry tele;
     Constants constants;
     public DriveSubsystem(HardwareMap hardwareMap, Telemetry telemetry){
 //        These initialization lines are passed through when we transfer it into the TeleOp
@@ -27,7 +27,6 @@ public class DriveSubsystem {
         frontRightMotor = hardwareMap.dcMotor.get("fr");
         backRightMotor = hardwareMap.dcMotor.get("br");
         imu = hardwareMap.get(IMU.class, "imu");
-
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
