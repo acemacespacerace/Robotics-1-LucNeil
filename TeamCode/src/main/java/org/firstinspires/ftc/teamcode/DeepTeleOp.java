@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
 @TeleOp(name = "TeleOp", group = "LucasNeilDeepBot")
@@ -14,6 +15,7 @@ public class DeepTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         DriveSubsystem drive = new DriveSubsystem(hardwareMap, telemetry);
+        ArmSubsystem arm = new ArmSubsystem(hardwareMap, telemetry);
 
         telemetry.addLine("Ready");
 
@@ -22,29 +24,13 @@ public class DeepTeleOp extends LinearOpMode {
         telemetry.addLine("Running");
 
         while (opModeIsActive()) {
-
-            double y = -gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x;
-            double rx = gamepad1.right_stick_x;
-
-//            drive.FieldCentric(y,x,rx);
-//            drive.RobotCentric(y,x,rx);
-
-            if (gamepad1.dpadUpWasPressed()) {
-                drive.Forward(2,1);
-            }else if (gamepad1.dpadDownWasPressed()) {
-                drive.Backward(2,1);
-            }else if (gamepad1.dpadRightWasPressed()) {
-                drive.Right(2,1);
-            }else if (gamepad1.dpadLeftWasPressed()) {
-                drive.Left(2,1);
+            if (gamepad1.x){
+                arm.worm.setPower(0.2);
+            } else if (gamepad1.a) {
+                arm.worm.setPower(-0.2);
             }
 
-            if (gamepad1.options) {
-//                This allows us to redeclare our heading in case it strays during TeleOp
-                drive.imu.resetYaw();
-            } // reset yaw
-
+            telemetry.addData("Ang", arm.worm.getCurrentPosition());
             telemetry.update();
         }
     }

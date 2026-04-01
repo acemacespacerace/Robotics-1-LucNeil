@@ -2,16 +2,14 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ArmSubsystem {
-    public DcMotorEx worm;
-    public DcMotorEx actuator;
-    Telemetry tele;
+    public final DcMotorEx worm;
+    public final DcMotorEx actuator;
+    final Telemetry tele;
     Constants constants;
 
     public ArmSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -25,13 +23,37 @@ public class ArmSubsystem {
         worm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         actuator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
+        worm.setTargetPositionTolerance(100);
+        actuator.setTargetPositionTolerance(50);
+
         tele = telemetry;
     }
 
     public void goToPos(DcMotorEx motor, int pos) {
-        int error = (pos - motor.getCurrentPosition());
-        motor.setTargetPosition(pos);
-        motor.setVelocity(error * constants.kP);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (motor.getCurrentPosition() != pos){
+            int error = (pos - motor.getCurrentPosition());
+            motor.setTargetPosition(pos);
+            motor.setVelocity(3000);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
     }
+
+    public void Submerse(){
+        goToPos(worm, constants.submerseAng);
+        goToPos(actuator, constants.submerseExt);
+    }
+
+    public void Basket(){
+        goToPos(worm, constants.basketAng);
+        goToPos(actuator, constants.basketExt);
+    }
+
+    public void Specimen(){
+        goToPos(worm, constants.specimenAng);
+        goToPos(actuator, constants.specimenExt);
+    }
+
+//    public void Inspection(){
+//        goToPos();
+//    }
+}
