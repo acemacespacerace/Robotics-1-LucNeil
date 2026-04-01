@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class ArmSubsystem {
     public final DcMotorEx worm;
     public final DcMotorEx actuator;
-    final Telemetry tele;
+    Telemetry tele;
     Constants constants;
 
     public ArmSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -23,19 +23,7 @@ public class ArmSubsystem {
         worm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         actuator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        worm.setTargetPositionTolerance(100);
-        actuator.setTargetPositionTolerance(50);
-
         tele = telemetry;
-    }
-
-    public void goToPos(DcMotorEx motor, int pos) {
-        while (motor.getCurrentPosition() != pos){
-            int error = (pos - motor.getCurrentPosition());
-            motor.setTargetPosition(pos);
-            motor.setVelocity(3000);
-            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
     }
 
     public void Submerse(){
@@ -53,7 +41,9 @@ public class ArmSubsystem {
         goToPos(actuator, constants.specimenExt);
     }
 
-//    public void Inspection(){
-//        goToPos();
-//    }
-}
+    public void goToPos(DcMotorEx motor, int pos) {
+        motor.setTargetPosition(pos);
+        motor.setVelocity(9999);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+    }
