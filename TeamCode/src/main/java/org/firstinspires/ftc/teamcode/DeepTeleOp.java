@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
-@TeleOp(name = "TeleOp", group = "LucasNeilDeepBot")
-@Disabled
+@TeleOp(name = "LucNeilTeleOp", group = "Deep")
+//@Disabled
 public class DeepTeleOp extends LinearOpMode {
 
     @Override
