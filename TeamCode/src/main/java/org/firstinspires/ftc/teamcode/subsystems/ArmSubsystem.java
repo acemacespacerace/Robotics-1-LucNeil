@@ -10,7 +10,7 @@ public class ArmSubsystem {
     public final DcMotorEx worm;
     public final DcMotorEx actuator;
     Telemetry tele;
-    Constants constants;
+    Constants constants = new Constants();
 
     public ArmSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         worm = hardwareMap.get(DcMotorEx.class, "worm");
@@ -20,45 +20,42 @@ public class ArmSubsystem {
         worm.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         actuator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        worm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        worm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         worm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         actuator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        worm.setTargetPositionTolerance(10);
-        actuator.setTargetPositionTolerance(10);
-
         tele = telemetry;
     }
 
-    public void Submerse(){
-        goToPos(worm, constants.submerseAng);
-        goToPos(actuator, constants.submerseExt);
-        tele.addLine("SubPos");
-    }
-
-    public void Basket(){
-        goToPos(worm, constants.basketAng);
-        goToPos(actuator, constants.basketExt);
-        tele.addLine("BaskPos");
-    }
-
+//    public void Submerse(){
+//        goToPos(worm, constants.submerseAng);
+//        goToPos(actuator, constants.submerseExt);
+//        tele.addLine("SubPos");
+//    }
+//
+//    public void Basket(){
+//        goToPos(worm, constants.basketAng);
+//        goToPos(actuator, constants.basketExt);
+//        tele.addLine("BaskPos");
+//    }
+//
     public void Specimen(){
-        goToPos(worm, constants.specimenAng);
-        goToPos(actuator, constants.specimenExt);
+        goToPos(worm, 2000);
+        goToPos(actuator, 2000);
         tele.addLine("SpecPos");
     }
 
     public void Tucked() {
-        goToPos(worm, constants.tuckedExt);
-//        goToPos(actuator, constants.tuckedExt);
+        goToPos(worm, 2000);
+        goToPos(actuator, 2000);
         tele.addLine("TucPos");
     }
 
     public void goToPos(DcMotorEx motor, int pos) {
         motor.setTargetPosition(pos);
-        motor.setVelocity(9999);
+        motor.setVelocity(2000);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
     }
