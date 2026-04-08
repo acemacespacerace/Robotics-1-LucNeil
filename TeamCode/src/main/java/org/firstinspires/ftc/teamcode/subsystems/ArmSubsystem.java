@@ -10,13 +10,15 @@ public class ArmSubsystem {
     public final DcMotorEx worm;
     public final DcMotorEx actuator;
     Telemetry tele;
-    Constants constants = new Constants();
 
     public ArmSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
+
+        Constants constants = new Constants();
+
         worm = hardwareMap.get(DcMotorEx.class, "worm");
         actuator = hardwareMap.get(DcMotorEx.class, "actuator");
 
-//        worm.setDirection(DcMotorEx.Direction.REVERSE);
+        worm.setDirection(DcMotorEx.Direction.REVERSE);
         worm.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         actuator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
@@ -43,19 +45,18 @@ public class ArmSubsystem {
 //
     public void Specimen(){
         goToPos(worm, 2000);
-        goToPos(actuator, 2000);
-        tele.addLine("SpecPos");
+        goToPos(actuator, -2000);
     }
 
     public void Tucked() {
-        goToPos(worm, 2000);
-        goToPos(actuator, 2000);
-        tele.addLine("TucPos");
+        goToPos(worm, 0);
+        goToPos(actuator, 0);
     }
 
     public void goToPos(DcMotorEx motor, int pos) {
+        double error = (pos - motor.getCurrentPosition());
         motor.setTargetPosition(pos);
-        motor.setVelocity(2000);
+        motor.setVelocity(Math.abs(error)*2);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
     }
