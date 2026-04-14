@@ -24,17 +24,6 @@ public class DeepTeleOp extends LinearOpMode {
         telemetry.addLine("Running");
 
         while (opModeIsActive()) {
-            if (gamepad1.dpad_up){
-                arm.worm.setPower(0.2);
-            } else if (gamepad1.dpad_down) {
-                arm.worm.setPower(-0.2);
-            }
-
-            if (gamepad1.dpad_right){
-                arm.actuator.setPower(0.2);
-            } else if (gamepad1.dpad_left) {
-                arm.actuator.setPower(-0.2);
-            }
 
             telemetry.addData("Ang", arm.worm.getCurrentPosition());
             telemetry.addData("Ext", arm.actuator.getCurrentPosition());

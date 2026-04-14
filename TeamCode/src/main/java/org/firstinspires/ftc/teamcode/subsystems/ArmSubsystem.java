@@ -44,19 +44,19 @@ public class ArmSubsystem {
 //    }
 //
     public void Specimen(){
-        goToPos(worm, 2000);
-        goToPos(actuator, -2000);
+        goToPos(worm, 2740);
+        goToPos(actuator, 11280);
     }
 
     public void Tucked() {
-        goToPos(worm, 0);
-        goToPos(actuator, 0);
+        goToPos(worm, -900);
+        goToPos(actuator, -2000);
     }
 
     public void goToPos(DcMotorEx motor, int pos) {
-        double error = (pos - motor.getCurrentPosition());
+        double velo = Math.abs(pos - motor.getCurrentPosition());
         motor.setTargetPosition(pos);
-        motor.setVelocity(Math.abs(error)*2);
+        motor.setVelocity(velo/3);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
     }

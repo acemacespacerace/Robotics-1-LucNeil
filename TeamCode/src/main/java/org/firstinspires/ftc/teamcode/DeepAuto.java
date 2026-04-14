@@ -19,19 +19,13 @@ public class DeepAuto extends LinearOpMode {
 
         waitForStart();
 
-        arm.Tucked();
-
-        while (opModeIsActive()) {
-//            drive.Forward(1,0.2);
-//            drive.Backward(1,0.2);
-            arm.Specimen();
-            sleep(5000);
+        if (opModeIsActive()) {
             arm.Tucked();
-            sleep(5000);
-
-            if (isStopRequested()){
-                arm.Tucked();
-            }
+//            drive.Forward(1,0.2);
+            arm.Specimen();
+            sleep(6000);
+            arm.Tucked();
+            sleep(6000);
         }
     }
 }
