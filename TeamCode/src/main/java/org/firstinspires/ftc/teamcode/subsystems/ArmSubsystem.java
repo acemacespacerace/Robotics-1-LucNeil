@@ -10,20 +10,20 @@ public class ArmSubsystem {
     public final DcMotorEx worm;
     public final DcMotorEx actuator;
     Telemetry tele;
+    Constants constants = new Constants();
 
     public ArmSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
-
-        Constants constants = new Constants();
 
         worm = hardwareMap.get(DcMotorEx.class, "worm");
         actuator = hardwareMap.get(DcMotorEx.class, "actuator");
 
         worm.setDirection(DcMotorEx.Direction.REVERSE);
+
         worm.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         actuator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-//        worm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        worm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         worm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         actuator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -44,19 +44,19 @@ public class ArmSubsystem {
 //    }
 //
     public void Specimen(){
-        goToPos(worm, 2740);
-        goToPos(actuator, 11280);
+        goToPos(worm, constants.specimenAng);
+        goToPos(actuator, constants.submerseExt);
     }
 
     public void Tucked() {
-        goToPos(worm, -900);
-        goToPos(actuator, -2000);
+        goToPos(worm, constants.tucked);
+        goToPos(actuator, constants.tucked);
     }
 
     public void goToPos(DcMotorEx motor, int pos) {
         double velo = Math.abs(pos - motor.getCurrentPosition());
         motor.setTargetPosition(pos);
-        motor.setVelocity(velo/3);
+        motor.setVelocity(velo*3);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
     }
