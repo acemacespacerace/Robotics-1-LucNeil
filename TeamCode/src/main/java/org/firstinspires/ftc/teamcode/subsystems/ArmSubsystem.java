@@ -19,8 +19,8 @@ public class ArmSubsystem {
 
         worm.setDirection(DcMotorEx.Direction.REVERSE);
 
-        worm.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        actuator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        //worm.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        //actuator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         worm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -31,7 +31,7 @@ public class ArmSubsystem {
         tele = telemetry;
     }
 
-//    public void Submerse(){
+    //    public void Submerse(){
 //        goToPos(worm, constants.submerseAng);
 //        goToPos(actuator, constants.submerseExt);
 //        tele.addLine("SubPos");
@@ -43,20 +43,24 @@ public class ArmSubsystem {
 //        tele.addLine("BaskPos");
 //    }
 //
-    public void Specimen(){
-        goToPos(worm, constants.specimenAng);
-        goToPos(actuator, constants.submerseExt);
+    public void Specimen() {
+        while (worm.getCurrentPosition() != constants.specimenAng && actuator.getCurrentPosition() != constants.submerseExt) {
+            goToPos(worm, constants.specimenAng);
+            goToPos(actuator, constants.submerseExt);
+        }
     }
 
     public void Tucked() {
-        goToPos(worm, constants.tucked);
-        goToPos(actuator, constants.tucked);
+        while (worm.getCurrentPosition() != constants.tucked && actuator.getCurrentPosition() != constants.tucked) {
+            goToPos(worm, constants.tucked);
+            goToPos(actuator, constants.tucked);
+        }
     }
 
     public void goToPos(DcMotorEx motor, int pos) {
         double velo = Math.abs(pos - motor.getCurrentPosition());
         motor.setTargetPosition(pos);
-        motor.setVelocity(velo*3);
+        motor.setVelocity(velo * 3);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
     }
+}
