@@ -4,8 +4,8 @@ public class Constants {
 //    public final int submerseAng = 2000; // TODO: change
 //    public final int basketAng = 200; // TODO: change
     public final int specimenAng = 3500; // TODO: change
-    public final int submerseExt = 13000; // TODO: change
+//    public final int submerseExt = 13000; // TODO: change
 //    public final int basketExt = 2000; // TODO: change
-//    public final int specimenExt = 11280; // TODO: change
-    public final int tucked = 0;
+    public final int specimenExt = 13100; // TODO: change
+    public final int tucked = 10;
 }

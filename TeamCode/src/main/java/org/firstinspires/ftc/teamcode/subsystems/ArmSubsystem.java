@@ -44,23 +44,27 @@ public class ArmSubsystem {
 //    }
 //
     public void Specimen() {
-        while (worm.getCurrentPosition() != constants.specimenAng && actuator.getCurrentPosition() != constants.submerseExt) {
-            goToPos(worm, constants.specimenAng);
-            goToPos(actuator, constants.submerseExt);
+        while (actuator.getCurrentPosition() <= constants.specimenExt-2 || actuator.getCurrentPosition() >= constants.specimenExt+2){
+            while (worm.getCurrentPosition() <= constants.specimenAng-2 || worm.getCurrentPosition() >= constants.specimenAng+2){
+                goToPos(worm, constants.specimenAng);
+                goToPos(actuator, constants.specimenExt);
+            }
         }
     }
 
     public void Tucked() {
-        while (worm.getCurrentPosition() != constants.tucked && actuator.getCurrentPosition() != constants.tucked) {
-            goToPos(worm, constants.tucked);
-            goToPos(actuator, constants.tucked);
+        while (actuator.getCurrentPosition() <= constants.tucked || actuator.getCurrentPosition() >= constants.tucked+100){
+            while (worm.getCurrentPosition() <= constants.tucked-2 || worm.getCurrentPosition() >= constants.tucked+2){
+                goToPos(worm, constants.tucked);
+                goToPos(actuator, constants.tucked);
+            }
         }
     }
 
     public void goToPos(DcMotorEx motor, int pos) {
         double velo = Math.abs(pos - motor.getCurrentPosition());
         motor.setTargetPosition(pos);
-        motor.setVelocity(velo * 3);
+        motor.setVelocity(velo * 4);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }
