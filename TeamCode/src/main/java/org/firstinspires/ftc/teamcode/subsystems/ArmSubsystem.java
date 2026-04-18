@@ -28,24 +28,16 @@ public class ArmSubsystem {
         worm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         actuator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
+//        worm.setPositionPIDFCoefficients(4);
+//        actuator.setPositionPIDFCoefficients(4);
+
         tele = telemetry;
     }
 
-    //    public void Submerse(){
-//        goToPos(worm, constants.submerseAng);
-//        goToPos(actuator, constants.submerseExt);
-//        tele.addLine("SubPos");
-//    }
-//
-//    public void Basket(){
-//        goToPos(worm, constants.basketAng);
-//        goToPos(actuator, constants.basketExt);
-//        tele.addLine("BaskPos");
-//    }
-//
+
     public void Specimen() {
-        while (actuator.getCurrentPosition() <= constants.specimenExt-2 || actuator.getCurrentPosition() >= constants.specimenExt+2){
-            while (worm.getCurrentPosition() <= constants.specimenAng-2 || worm.getCurrentPosition() >= constants.specimenAng+2){
+        while (actuator.getCurrentPosition() < constants.specimenExt || actuator.getCurrentPosition() > constants.specimenExt+100){
+            while (worm.getCurrentPosition() < constants.specimenAng-2 || worm.getCurrentPosition() > constants.specimenAng+2){
                 goToPos(worm, constants.specimenAng);
                 goToPos(actuator, constants.specimenExt);
             }
@@ -53,13 +45,15 @@ public class ArmSubsystem {
     }
 
     public void Tucked() {
-        while (actuator.getCurrentPosition() <= constants.tucked || actuator.getCurrentPosition() >= constants.tucked+100){
-            while (worm.getCurrentPosition() <= constants.tucked-2 || worm.getCurrentPosition() >= constants.tucked+2){
+        while (actuator.getCurrentPosition() < constants.tucked || actuator.getCurrentPosition() > constants.tucked+100){
+            while (worm.getCurrentPosition() < constants.tucked-2 || worm.getCurrentPosition() > constants.tucked+2){
                 goToPos(worm, constants.tucked);
                 goToPos(actuator, constants.tucked);
             }
         }
     }
+
+
 
     public void goToPos(DcMotorEx motor, int pos) {
         double velo = Math.abs(pos - motor.getCurrentPosition());
