@@ -27,6 +27,7 @@ public class DriveSubsystem {
         frontRightMotor = hardwareMap.dcMotor.get("fr");
         backRightMotor = hardwareMap.dcMotor.get("br");
         imu = hardwareMap.get(IMU.class, "imu");
+
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
