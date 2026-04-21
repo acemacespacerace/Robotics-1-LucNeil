@@ -55,6 +55,7 @@ public class ArmSubsystem {
             case HOLD:
                 rightServo.setPower(0);
                 leftServo.setPower(0);
+                break;
 
             case EXPEL:
                 while (distanceSensor.getDistance(DistanceUnit.MM) < constants.sampleDistance+10){
@@ -62,8 +63,15 @@ public class ArmSubsystem {
                     leftServo.setPower(-1);
                 }
                 curState = ServoState.HOLD;
+                break;
 
             case COLLECT:
+                while (distanceSensor.getDistance(DistanceUnit.MM) > constants.sampleDistance){
+                    rightServo.setPower(1);
+                    leftServo.setPower(1);
+                }
+                curState = ServoState.HOLD;
+                break;
         }
     }
 
