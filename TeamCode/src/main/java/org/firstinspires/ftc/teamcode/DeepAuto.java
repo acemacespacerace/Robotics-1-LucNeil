@@ -23,7 +23,7 @@ public class DeepAuto extends LinearOpMode {
             //arm.Tucked();
             arm.Specimen();
             //sleep(10000);
-            arm.Tucked();
+            arm.Tuck();
         }
     }
 }
