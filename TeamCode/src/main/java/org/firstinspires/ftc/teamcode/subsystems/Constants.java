@@ -5,5 +5,10 @@ public class Constants {
     public final int fullExt = 13100;
     public final int threeQuExt = (fullExt*3)/4;
     public final int tucked = 10;
-    public final double sampleDistance = 20;
+    public final double floorDist = 30;
+//    public enum ServoState{
+//        COLLECT,
+//        EXPEL,
+//        HOLD
+//    }
 }

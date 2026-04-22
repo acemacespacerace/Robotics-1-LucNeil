@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 
@@ -27,6 +28,7 @@ public class DeepTeleOp extends LinearOpMode {
 
             telemetry.addData("Ang", arm.worm.getCurrentPosition());
             telemetry.addData("Ext", arm.actuator.getCurrentPosition());
+            telemetry.addData("DistanceMM", arm.distanceSensor.getDistance(DistanceUnit.MM));
             telemetry.update();
         }
     }
