@@ -1,20 +1,24 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.hardware.ServoEx;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class ArmSubsystem {
+public class ArmSubsystem extends SubsystemBase{
     public final DcMotorEx worm;
     public final DcMotorEx actuator;
     public final CRServo rightServo;
     public final CRServo leftServo;
-    public final DistanceSensor distanceSensor;
     Telemetry tele;
     Constants constants = new Constants();
     ElapsedTime servoTimer = new ElapsedTime();
@@ -32,9 +36,8 @@ public class ArmSubsystem {
         actuator = hardwareMap.get(DcMotorEx.class, "actuator");
         rightServo = hardwareMap.get(CRServo.class, "right");
         leftServo = hardwareMap.get(CRServo.class, "left");
-        distanceSensor = hardwareMap.get(DistanceSensor.class, "distance");
 
-        worm.setDirection(DcMotorEx.Direction.REVERSE);
+        worm.setDirection(DcMotorSimple.Direction.REVERSE);
         leftServo.setDirection(CRServo.Direction.REVERSE);
 
         //worm.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -84,7 +87,7 @@ public class ArmSubsystem {
 
             case COLLECT:
                 servoTimer.reset();
-                while (servoTimer.seconds() < 10000) {
+                while (actuator.getCurrentPosition() < constants.fullExt-200) {
                     rightServo.setPower(1);
                     leftServo.setPower(1);
                     goToPos(actuator, constants.fullExt);
