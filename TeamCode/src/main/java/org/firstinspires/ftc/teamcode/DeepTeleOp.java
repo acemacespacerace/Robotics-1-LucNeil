@@ -28,7 +28,6 @@ public class DeepTeleOp extends LinearOpMode {
 
             telemetry.addData("Ang", arm.worm.getCurrentPosition());
             telemetry.addData("Ext", arm.actuator.getCurrentPosition());
-            telemetry.addData("DistanceMM", arm.distanceSensor.getDistance(DistanceUnit.MM));
             telemetry.update();
         }
     }

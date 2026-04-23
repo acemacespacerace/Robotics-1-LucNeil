@@ -1,34 +1,31 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
-import com.arcrobotics.ftclib.hardware.ServoEx;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class ArmSubsystem extends SubsystemBase{
+public class ArmSubsystem{
     public final DcMotorEx worm;
     public final DcMotorEx actuator;
     public final CRServo rightServo;
     public final CRServo leftServo;
     Telemetry tele;
     Constants constants = new Constants();
-    ElapsedTime servoTimer = new ElapsedTime();
-    boolean collect = false;
-    boolean expel = false;
-
+    ElapsedTime expelTimer = new ElapsedTime();
     public enum ServoState {
         COLLECT,
         EXPEL,
         HOLD
+    }
+
+    public enum ArmState {
+        TUCKED,
+        SCORE
     }
 
     public ArmSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -55,44 +52,38 @@ public class ArmSubsystem extends SubsystemBase{
         tele = telemetry;
     }
 
+    public void SetArmState(ArmState curArmState){
+        switch (curArmState) {
+            case TUCKED:
+                Tuck();
+                break;
 
-    public void Specimen() {
-        while (actuator.getCurrentPosition() < constants.fullExt || actuator.getCurrentPosition() > constants.fullExt + 100) {
-            while (worm.getCurrentPosition() < constants.specimenAng - 2 || worm.getCurrentPosition() > constants.specimenAng + 2) {
-                goToPos(worm, constants.specimenAng);
-                goToPos(actuator, constants.fullExt);
-            }
+            case SCORE:
+                Specimen();
+                SetServoState(ServoState.EXPEL);
+                break;
         }
     }
 
-    public void Tuck() {
-        while (actuator.getCurrentPosition() < constants.tucked || actuator.getCurrentPosition() > constants.tucked + 100) {
-            while (worm.getCurrentPosition() < constants.tucked - 2 || worm.getCurrentPosition() > constants.tucked + 2) {
-                goToPos(worm, constants.tucked);
-                goToPos(actuator, constants.tucked);
-            }
-        }
-    }
-
-    public void SetServoState(ServoState curState) {
-        switch (curState) {
+    public void SetServoState(ServoState curServState) {
+        expelTimer.reset();
+        switch (curServState) {
             case EXPEL:
-                servoTimer.reset();
-                while (servoTimer.seconds() < 3000) {
+                while (expelTimer.seconds() < 2000) {
                     rightServo.setPower(-1);
                     leftServo.setPower(-1);
                 }
-                curState = ServoState.HOLD;
+                curServState = ServoState.HOLD;
                 break;
 
             case COLLECT:
-                servoTimer.reset();
                 while (actuator.getCurrentPosition() < constants.fullExt-200) {
                     rightServo.setPower(1);
                     leftServo.setPower(1);
                     goToPos(actuator, constants.fullExt);
                 }
-                curState = ServoState.HOLD;
+                goToPos(actuator, constants.tucked);
+                curServState = ServoState.HOLD;
                 break;
 
             case HOLD:
@@ -103,9 +94,27 @@ public class ArmSubsystem extends SubsystemBase{
     }
 
     public void goToPos(DcMotorEx motor, int pos) {
-        double velo = Math.abs(pos - motor.getCurrentPosition());
+//        double velo = Math.abs(pos - motor.getCurrentPosition());
         motor.setTargetPosition(pos);
-        motor.setVelocity(velo * 4);
+        motor.setVelocity(3000);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    private void Specimen() {
+        while (actuator.getCurrentPosition() < constants.fullExt || actuator.getCurrentPosition() > constants.fullExt + 100) {
+            while (worm.getCurrentPosition() < constants.specimenAng - 2 || worm.getCurrentPosition() > constants.specimenAng + 2) {
+                goToPos(worm, constants.specimenAng);
+                goToPos(actuator, constants.fullExt);
+            }
+        }
+    }
+
+    private void Tuck() {
+        while (actuator.getCurrentPosition() < constants.tucked || actuator.getCurrentPosition() > constants.tucked + 100) {
+            while (worm.getCurrentPosition() < constants.tucked - 2 || worm.getCurrentPosition() > constants.tucked + 2) {
+                goToPos(worm, constants.tucked);
+                goToPos(actuator, constants.tucked);
+            }
+        }
     }
 }
