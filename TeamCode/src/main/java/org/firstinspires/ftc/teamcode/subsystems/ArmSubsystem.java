@@ -46,8 +46,8 @@ public class ArmSubsystem{
         worm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         actuator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-//        worm.setPositionPIDFCoefficients(4);
-//        actuator.setPositionPIDFCoefficients(4);
+        worm.setPositionPIDFCoefficients(3);
+        actuator.setPositionPIDFCoefficients(5);
 
         tele = telemetry;
     }
@@ -55,12 +55,16 @@ public class ArmSubsystem{
     public void SetArmState(ArmState curArmState){
         switch (curArmState) {
             case TUCKED:
+                SetServoState(ServoState.HOLD);
                 Tuck();
+                SetServoState(ServoState.HOLD);
                 break;
 
             case SCORE:
+                SetServoState(ServoState.HOLD);
                 Specimen();
                 SetServoState(ServoState.EXPEL);
+                SetServoState(ServoState.HOLD);
                 break;
         }
     }
@@ -73,17 +77,15 @@ public class ArmSubsystem{
                     rightServo.setPower(-1);
                     leftServo.setPower(-1);
                 }
-                curServState = ServoState.HOLD;
                 break;
 
             case COLLECT:
-                while (actuator.getCurrentPosition() < constants.fullExt-200) {
+                while (actuator.getCurrentPosition() < constants.fullExt-500) {
                     rightServo.setPower(1);
                     leftServo.setPower(1);
                     goToPos(actuator, constants.fullExt);
                 }
-                goToPos(actuator, constants.tucked);
-                curServState = ServoState.HOLD;
+                ActTuck();
                 break;
 
             case HOLD:
@@ -94,9 +96,8 @@ public class ArmSubsystem{
     }
 
     public void goToPos(DcMotorEx motor, int pos) {
-//        double velo = Math.abs(pos - motor.getCurrentPosition());
         motor.setTargetPosition(pos);
-        motor.setVelocity(3000);
+        motor.setVelocity(9999);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
@@ -115,6 +116,12 @@ public class ArmSubsystem{
                 goToPos(worm, constants.tucked);
                 goToPos(actuator, constants.tucked);
             }
+        }
+    }
+
+    private void ActTuck() {
+        while (actuator.getCurrentPosition() < constants.tucked - 2 || actuator.getCurrentPosition() > constants.tucked + 2) {
+            goToPos(actuator, constants.tucked+100); // TODO: test
         }
     }
 }

@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
@@ -15,7 +14,6 @@ public class DeepAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
         DriveSubsystem drive = new DriveSubsystem(hardwareMap, telemetry);
         ArmSubsystem arm = new ArmSubsystem(hardwareMap, telemetry);
         Constants constants = new Constants();
@@ -23,9 +21,10 @@ public class DeepAuto extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            arm.SetServoState(ArmSubsystem.ServoState.COLLECT);
             arm.SetArmState(ArmSubsystem.ArmState.SCORE);
             arm.SetArmState(ArmSubsystem.ArmState.TUCKED);
-            arm.SetServoState(ArmSubsystem.ServoState.COLLECT);
+
         }
     }
 }
