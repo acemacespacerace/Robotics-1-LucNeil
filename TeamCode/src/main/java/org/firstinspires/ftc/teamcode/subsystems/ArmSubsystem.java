@@ -69,7 +69,7 @@ public class ArmSubsystem{
         expelTimer.reset();
         switch (curServState) {
             case EXPEL:
-                while (expelTimer.seconds() < 2000) {
+                while (expelTimer.milliseconds() < 2000) {
                     rightServo.setPower(-1);
                     leftServo.setPower(-1);
                 }

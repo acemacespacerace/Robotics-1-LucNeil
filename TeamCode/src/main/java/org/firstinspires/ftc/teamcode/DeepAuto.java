@@ -23,7 +23,9 @@ public class DeepAuto extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            arm.SetServoState(ArmSubsystem.ServoState.EXPEL);
+            arm.SetArmState(ArmSubsystem.ArmState.SCORE);
+            arm.SetArmState(ArmSubsystem.ArmState.TUCKED);
+            arm.SetServoState(ArmSubsystem.ServoState.COLLECT);
         }
     }
 }
