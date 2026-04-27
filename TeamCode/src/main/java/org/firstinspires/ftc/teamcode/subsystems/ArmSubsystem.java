@@ -25,7 +25,9 @@ public class ArmSubsystem{
 
     public enum ArmState {
         TUCKED,
-        SCORE
+        SCORE,
+        INIT
+//        RESET
     }
 
     public ArmSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -66,6 +68,14 @@ public class ArmSubsystem{
                 SetServoState(ServoState.EXPEL);
                 SetServoState(ServoState.HOLD);
                 break;
+
+            case INIT:
+                Init();
+                worm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+//            case RESET:
+//                Reset();
         }
     }
 
@@ -73,7 +83,7 @@ public class ArmSubsystem{
         expelTimer.reset();
         switch (curServState) {
             case EXPEL:
-                while (expelTimer.milliseconds() < 2000) {
+                while (expelTimer.milliseconds() < 1000) {
                     rightServo.setPower(-1);
                     leftServo.setPower(-1);
                 }
@@ -85,7 +95,6 @@ public class ArmSubsystem{
                     leftServo.setPower(1);
                     goToPos(actuator, constants.fullExt);
                 }
-                ActTuck();
                 break;
 
             case HOLD:
@@ -119,9 +128,15 @@ public class ArmSubsystem{
         }
     }
 
-    private void ActTuck() {
-        while (actuator.getCurrentPosition() < constants.tucked - 2 || actuator.getCurrentPosition() > constants.tucked + 2) {
-            goToPos(actuator, constants.tucked+100); // TODO: test
+    private void Init() {
+        while (worm.getCurrentPosition() < constants.initAng - 2 || worm.getCurrentPosition() > constants.initAng + 2) {
+            goToPos(worm, constants.initAng);
         }
     }
+
+//    private void Reset() {
+//        while (worm.getCurrentPosition() < -constants.initAng - 2 || worm.getCurrentPosition() > -constants.initAng + 2) {
+//            goToPos(worm, -constants.initAng); // TODO: test
+//        }
+//    }
 }
