@@ -26,8 +26,8 @@ public class ArmSubsystem{
     public enum ArmState {
         TUCKED,
         SCORE,
-        INIT
-//        RESET
+        INIT,
+        RESET
     }
 
     public ArmSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -73,9 +73,11 @@ public class ArmSubsystem{
                 Init();
                 worm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                break;
 
-//            case RESET:
-//                Reset();
+            case RESET:
+                Reset();
+                break;
         }
     }
 
@@ -134,9 +136,9 @@ public class ArmSubsystem{
         }
     }
 
-//    private void Reset() {
-//        while (worm.getCurrentPosition() < -constants.initAng - 2 || worm.getCurrentPosition() > -constants.initAng + 2) {
-//            goToPos(worm, -constants.initAng); // TODO: test
-//        }
-//    }
+    private void Reset() {
+        while (worm.getCurrentPosition() < -constants.initAng - 2 || worm.getCurrentPosition() > -constants.initAng + 2) {
+            goToPos(worm, -constants.resetAng); // TODO: test
+        }
+    }
 }
