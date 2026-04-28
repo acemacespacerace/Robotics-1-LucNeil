@@ -48,8 +48,8 @@ public class ArmSubsystem{
         worm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         actuator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        worm.setPositionPIDFCoefficients(3);
-        actuator.setPositionPIDFCoefficients(5);
+        worm.setPositionPIDFCoefficients(4);
+        actuator.setPositionPIDFCoefficients(6.5);
 
         tele = telemetry;
     }
@@ -64,7 +64,7 @@ public class ArmSubsystem{
 
             case SCORE:
                 SetServoState(ServoState.HOLD);
-                Specimen();
+                Score();
                 SetServoState(ServoState.EXPEL);
                 SetServoState(ServoState.HOLD);
                 break;
@@ -112,10 +112,10 @@ public class ArmSubsystem{
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    private void Specimen() {
+    private void Score() {
         while (actuator.getCurrentPosition() < constants.fullExt || actuator.getCurrentPosition() > constants.fullExt + 100) {
-            while (worm.getCurrentPosition() < constants.specimenAng - 2 || worm.getCurrentPosition() > constants.specimenAng + 2) {
-                goToPos(worm, constants.specimenAng);
+            while (worm.getCurrentPosition() < constants.scoreAng - 2 || worm.getCurrentPosition() > constants.scoreAng + 2) {
+                goToPos(worm, constants.scoreAng);
                 goToPos(actuator, constants.fullExt);
             }
         }
@@ -137,8 +137,11 @@ public class ArmSubsystem{
     }
 
     private void Reset() {
-        while (worm.getCurrentPosition() < -constants.initAng - 2 || worm.getCurrentPosition() > -constants.initAng + 2) {
-            goToPos(worm, -constants.resetAng); // TODO: test
+        while (actuator.getCurrentPosition() < constants.tucked || actuator.getCurrentPosition() > constants.tucked + 100) {
+            while (worm.getCurrentPosition() < constants.resetAng - 2 || worm.getCurrentPosition() > constants.resetAng + 2) {
+                goToPos(worm, constants.resetAng);
+                goToPos(actuator, constants.tucked);
+            }
         }
     }
 }
