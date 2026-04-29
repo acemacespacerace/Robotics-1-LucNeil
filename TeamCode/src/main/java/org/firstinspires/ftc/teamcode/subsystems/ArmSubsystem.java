@@ -49,7 +49,7 @@ public class ArmSubsystem{
         actuator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         worm.setPositionPIDFCoefficients(4);
-        actuator.setPositionPIDFCoefficients(6.5);
+        actuator.setPositionPIDFCoefficients(6);
 
         tele = telemetry;
     }
@@ -92,11 +92,13 @@ public class ArmSubsystem{
                 break;
 
             case COLLECT:
+//                Tuck();
                 while (actuator.getCurrentPosition() < constants.fullExt-500) {
                     rightServo.setPower(1);
                     leftServo.setPower(1);
                     goToPos(actuator, constants.fullExt);
                 }
+                Tuck();
                 break;
 
             case HOLD:
@@ -137,7 +139,7 @@ public class ArmSubsystem{
     }
 
     private void Reset() {
-        while (actuator.getCurrentPosition() < constants.tucked || actuator.getCurrentPosition() > constants.tucked + 100) {
+        while (actuator.getCurrentPosition() < constants.tucked || actuator.getCurrentPosition() > constants.tucked + 300) {
             while (worm.getCurrentPosition() < constants.resetAng - 2 || worm.getCurrentPosition() > constants.resetAng + 2) {
                 goToPos(worm, constants.resetAng);
                 goToPos(actuator, constants.tucked);
