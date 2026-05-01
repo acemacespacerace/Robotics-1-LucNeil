@@ -39,9 +39,6 @@ public class ArmSubsystem{
         worm.setDirection(DcMotorSimple.Direction.REVERSE);
         leftServo.setDirection(CRServo.Direction.REVERSE);
 
-        //worm.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        //actuator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
         worm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -49,17 +46,22 @@ public class ArmSubsystem{
         actuator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         worm.setPositionPIDFCoefficients(4);
-        actuator.setPositionPIDFCoefficients(6);
+        actuator.setPositionPIDFCoefficients(7);
 
         tele = telemetry;
     }
 
     public void SetArmState(ArmState curArmState){
         switch (curArmState) {
+            case INIT:
+                Init();
+                worm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                break;
+
             case TUCKED:
                 SetServoState(ServoState.HOLD);
                 Tuck();
-                SetServoState(ServoState.HOLD);
                 break;
 
             case SCORE:
@@ -69,13 +71,8 @@ public class ArmSubsystem{
                 SetServoState(ServoState.HOLD);
                 break;
 
-            case INIT:
-                Init();
-                worm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                actuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                break;
-
             case RESET:
+                SetServoState(ServoState.HOLD);
                 Reset();
                 break;
         }
@@ -92,8 +89,8 @@ public class ArmSubsystem{
                 break;
 
             case COLLECT:
-//                Tuck();
-                while (actuator.getCurrentPosition() < constants.fullExt-500) {
+                Tuck();
+                while (actuator.getCurrentPosition() < constants.fullExt) {
                     rightServo.setPower(1);
                     leftServo.setPower(1);
                     goToPos(actuator, constants.fullExt);
@@ -109,41 +106,29 @@ public class ArmSubsystem{
     }
 
     public void goToPos(DcMotorEx motor, int pos) {
-        motor.setTargetPosition(pos);
-        motor.setVelocity(9999);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (motor.getCurrentPosition() < pos-10 || motor.getCurrentPosition() > pos+10) {
+            motor.setTargetPosition(pos);
+            motor.setVelocity(9999);
+            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
     }
 
     private void Score() {
-        while (actuator.getCurrentPosition() < constants.fullExt || actuator.getCurrentPosition() > constants.fullExt + 100) {
-            while (worm.getCurrentPosition() < constants.scoreAng - 2 || worm.getCurrentPosition() > constants.scoreAng + 2) {
-                goToPos(worm, constants.scoreAng);
-                goToPos(actuator, constants.fullExt);
-            }
-        }
+        goToPos(worm, constants.scoreAng);
+        goToPos(actuator, constants.fullExt);
     }
 
     private void Tuck() {
-        while (actuator.getCurrentPosition() < constants.tucked || actuator.getCurrentPosition() > constants.tucked + 100) {
-            while (worm.getCurrentPosition() < constants.tucked - 2 || worm.getCurrentPosition() > constants.tucked + 2) {
-                goToPos(worm, constants.tucked);
-                goToPos(actuator, constants.tucked);
-            }
-        }
+        goToPos(actuator, constants.tucked);
+        goToPos(worm, constants.tucked);
     }
 
     private void Init() {
-        while (worm.getCurrentPosition() < constants.initAng - 2 || worm.getCurrentPosition() > constants.initAng + 2) {
-            goToPos(worm, constants.initAng);
-        }
+        goToPos(worm, constants.initAng);
     }
 
     private void Reset() {
-        while (actuator.getCurrentPosition() < constants.tucked || actuator.getCurrentPosition() > constants.tucked + 300) {
-            while (worm.getCurrentPosition() < constants.resetAng - 2 || worm.getCurrentPosition() > constants.resetAng + 2) {
-                goToPos(worm, constants.resetAng);
-                goToPos(actuator, constants.tucked);
-            }
-        }
+        goToPos(actuator, constants.tucked);
+        goToPos(worm, constants.resetAng);
     }
 }
