@@ -114,12 +114,13 @@ public class ArmSubsystem{
     }
 
     private void Score() {
+        ActTuck();
         goToPos(worm, constants.scoreAng);
         goToPos(actuator, constants.fullExt);
     }
 
     private void Tuck() {
-        goToPos(actuator, constants.tucked);
+        ActTuck();
         goToPos(worm, constants.tucked);
     }
 
@@ -128,7 +129,11 @@ public class ArmSubsystem{
     }
 
     private void Reset() {
-        goToPos(actuator, constants.tucked);
+        ActTuck();
         goToPos(worm, constants.resetAng);
+    }
+
+    private void ActTuck() {
+        goToPos(actuator, constants.tucked);
     }
 }

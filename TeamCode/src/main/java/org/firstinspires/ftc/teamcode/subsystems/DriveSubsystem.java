@@ -139,4 +139,34 @@ public class DriveSubsystem {
             backRightMotor.setPower(0);
         }
     }
+
+    public void DiagRight(long duration, double power){
+        time.reset();
+        while (time.seconds() <= duration) {
+            frontLeftMotor.setPower(power);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backRightMotor.setPower(power);
+        } if (time.seconds() > duration){
+            frontLeftMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backRightMotor.setPower(0);
+        }
+    }
+
+    public void DiagLeft(long duration, double power){
+        time.reset();
+        while (time.seconds() <= duration) {
+            frontLeftMotor.setPower(0);
+            backLeftMotor.setPower(power);
+            frontRightMotor.setPower(power);
+            backRightMotor.setPower(0);
+        } if (time.seconds() > duration){
+            frontLeftMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backRightMotor.setPower(0);
+        }
+    }
 }
